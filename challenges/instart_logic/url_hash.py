@@ -1,5 +1,8 @@
-__author__ = 'zrehman'
+'''
+Created on Jul 4, 2014
 
+@author: zrehman
+'''
 def hash_my_url(url):
     """Return a number between 1 and 1000
 
