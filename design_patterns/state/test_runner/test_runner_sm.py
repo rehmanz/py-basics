@@ -21,7 +21,7 @@ class TestRunnerStateMachine:
         self.cleanup_host_state_o   = CleanupHostState(state=self,
                                                        host=self.host)
         self.state = self.kick_off_host_state_o
-        
+    
     """ Mutator Methods """
     def set_runner_state(self, state):
         self.state = state
