@@ -5,7 +5,7 @@ Created on Jul 5, 2014
 '''
 import unittest
 
-from flys import Flys, ItFlys, CantFly
+from flys import Flys, ItFlys, ItFlysSuperFast, CantFly
 
 class Animal:
     def __init__(self, name):
@@ -30,6 +30,11 @@ class Bird(Animal):
         Animal.__init__(self, name=name)
         self.fly_o = Flys(context=ItFlys)
 
+class SuperFastBird(Bird):
+    def __init__(self, name):
+        Bird.__init__(self, name=name)
+        self.fly_o = Flys(context=ItFlysSuperFast)
+
 class Dog(Animal):
     def __init__(self, name):
         Animal.__init__(self, name=name)
@@ -41,9 +46,11 @@ class AnimalUnitTest(unittest.TestCase):
     def setUpClass(self):
         self.bird_o = Bird('Tweety')
         self.dog_o  = Dog('Hooch')
+        self.eagle_o = SuperFastBird('Eagle')
     
     def test_fly(self):
         self.assertEqual(self.bird_o.try_to_fly(), 'Soaring high!')
+        self.assertEqual(self.eagle_o.try_to_fly(), 'Flying like an eagle!')
         self.assertEqual(self.dog_o.try_to_fly(), 'Can\'t fly')
     
     def test_dog_flies_now(self):

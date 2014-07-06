@@ -22,6 +22,10 @@ class ItFlys(object):
     def execute(self):
         return 'Soaring high!'
 
+class ItFlysSuperFast(object):
+    def execute(self):
+        return 'Flying like an eagle!'
+
 class CantFly(object):
     def execute(self):
         return 'Can\'t fly'
