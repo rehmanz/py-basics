@@ -7,8 +7,29 @@ import unittest
 
 """ CleanupHostState Class """
 class CleanupHostState:
-    def __init__(self):
-        pass
+    def __init__(self, state, host):
+        self.state = state
+        self.host  = host
+    
+    def get_current_state(self):
+        return self.state
+        
+    def kick_off_host_state(self):
+        print 'Cannot kick off %s from CleanupHostState' %self.host
+    
+    def configure_host_state(self):
+        print 'Cannot configure %s from CleanupHostState' %self.host
+        
+    def cleanup_host_state(self):
+        print '##'
+        print '# CleanupHostState: %s' %self.host
+        print '##'
+        print '1: Send Cleanup command to %s' %self.host
+        print '2: Got SUCCESS from %s' %self.host
+        print '3: Send Exit command to %s' %self.host
+        self.state.set_runner_state(state=self.state.get_kick_off_host_state())
+        print '4: Transitioned to KickOffHostState'
+        return 'Cleaned up %s' %self.host
     
 """ Unit Tests """
 class CleanupHostStateUnitTest(unittest.TestCase):
