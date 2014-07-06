@@ -4,7 +4,6 @@ Created on Jul 5, 2014
 @author: zrehman
 '''
 import unittest
-import types
 
 """ Flys Strategy Class """
 class Flys(object):
