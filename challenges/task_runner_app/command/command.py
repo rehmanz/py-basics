@@ -52,7 +52,7 @@ class CommandUnitTest(unittest.TestCase):
         self.cmd_o = Command(command='pwd')
         expected_d = {'status': 0, 
                       'stderr': '', 
-                      'stdout': '/Users/zrehman/python-algorithms/challenges/instart_logic/task_runner_app/command\n'}
+                      'stdout': '/Users/zrehman/python-algorithms/challenges/task_runner_app/command\n'}
         self.assertDictEqual(self.cmd_o.execute(), expected_d)
     
     def test_invalid_command(self):
