@@ -178,7 +178,7 @@ class TaskRunnerUnitTest(unittest.TestCase):
         # Assess results
         for task_t in tasks_l:
             task_id        = task_t[0]
-            task_status_o  = task_t[1]
+            task_status_o = tr_o.status(task_id=task_id)
             self.assertEqual(task_status_o.get_status(), 0)
     
     @classmethod
@@ -188,7 +188,8 @@ class TaskRunnerUnitTest(unittest.TestCase):
 """ Unit Test Runner """
 def TaskRunnerUnitTestRunner():
     tests = ['test_failed_task',
-             'test_passed_task']
+             'test_passed_task',
+             'test_multiple_successful_tasks']
     
     return unittest.TestSuite(map(TaskRunnerUnitTest, tests))
 
