@@ -6,7 +6,7 @@ Design
 
 Implementation
     • Initially created the 'scratch_pad.py' program for a quick POC of the parallel execution and concurrency
-    • Command class was implemented for different responsibility of a single command within a task and having it deal with all the exceptions etc.
+    • Command class was implemented for differing responsibility of a single command within a task and having it deal with all the exceptions etc.
     • Task and TaskStatus class was implemented next and unit tested.
     • TaskRunner class was implemented at the end. Successfully tested with failed, passed and multiple task cases. There are still a lot of test cases to be incorporated!
     • #TODO tags as a reminder to implement later.
