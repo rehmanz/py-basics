@@ -27,6 +27,8 @@ d3 = {'foo' : 'bar'}
 print compare_dictionaries(d1, d2)
 print compare_dictionaries(d1, d3)
 
+
+
 """
 >>> def is_dict(e):
 ...     return isinstance(e, dict)
