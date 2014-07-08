@@ -25,10 +25,9 @@ class TaskRunner(object):
         
         # Setup a thread pool of size concurrency
         for i in range(self.concurrancy):
-            self.thread = Thread(target=self.start)
+            self.thread = Thread(target=self.__worker)
             self.thread.setDaemon(True)
             self.workers_l.append(self.thread)
-            self.thread.start()
     
     def add_task(self, task):
         """Adds a task to the task pool.
@@ -52,10 +51,7 @@ class TaskRunner(object):
         This should cause the TaskRunner to begin executing tasks, however, it does
         not need to wait for execution to begin in order to return.
         """
-        while not self.stop_flag:
-            task = self.task_q.get()
-            print task
-            task.execute()
+        self.thread.start()
     
     def stop(self):
         """Synchronously stops the task pool.
@@ -101,7 +97,7 @@ class TaskRunner(object):
     def wait(self):
         """OPTIONAL) Wait for all tasks added to the task pool to execute.
         """
-        # Wait for completion
+        # Wait for all tasks to be completed
         self.task_q.join()
     
     # OPTIONAL - you may skip implementation of this function
@@ -112,23 +108,78 @@ class TaskRunner(object):
         Returns:
           True if the task was canceled successfully, false otherwise
         """
-        pass
+        raise NotImplementedError('TaskRunnerExcpetion: cancel_task')
+    
+    def __worker(self):
+        """Worker fetches tasks one by one from queue & executes them
+        """
+        while not self.stop_flag:
+            task = self.task_q.get()
+            task.execute()
+            print 'Successfully complted task %s' %(task)
+            self.task_q.task_done()
     
 """ Unit Tests """
 class TaskRunnerUnitTest(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        self.tr_o = TaskRunner(concurrency=1)
+        pass
     
-    def test_add_one_task(self):
-        self.task_o = Task(commands=['ls', 'ps -ef', 'whoami', 
-                                     'I think therefore I am'],
+    def test_failed_task(self):
+        tr_o = TaskRunner(concurrency=2)
+        task_o = Task(commands=['ls', 'ps -ef', 'whoami', 
+                                'I think therefore I am'],
                            capture_output=True)
-        self.tr_o.add_task(self.task_o)
-    
-    def test_start_one_task(self):
-        self.tr_o.start()
-        self.tr_o.wait()
+        task_id = tr_o.add_task(task_o)
+        tr_o.start()
+        tr_o.wait()
+        tr_o.stop()
+        
+        task_status_o = tr_o.status(task_id=task_id)
+        self.assertEqual(task_status_o.get_status(), 1)
+        
+    def test_passed_task(self):
+        tr_o = TaskRunner(concurrency=2)
+        task_o = Task(commands=['ls', 'ps -ef'],
+                      capture_output=True)
+        task_id = tr_o.add_task(task_o)
+        tr_o.start()
+        tr_o.wait()
+        tr_o.stop()
+        
+        task_status_o = tr_o.status(task_id=task_id)
+        self.assertEqual(task_status_o.get_status(), 0)
+        
+    def test_multiple_successful_tasks(self):
+        tr_o = TaskRunner(concurrency=10)
+        
+        # Add tasks
+        tasks_l = []
+        task_o = Task(commands=['ls', 'ps -ef'],
+                      capture_output=True)
+        task_id = tr_o.add_task(task_o)
+        tasks_l.append((task_id, task_o))
+        
+        task_o = Task(commands=['ls'],
+                      capture_output=True)
+        task_id = tr_o.add_task(task_o)
+        tasks_l.append((task_id, task_o))
+        
+        task_o = Task(commands=['pwd', 'ps -ef'],
+                      capture_output=True)
+        task_id = tr_o.add_task(task_o)
+        tasks_l.append((task_id, task_o))
+        
+        # Start execution
+        tr_o.start()
+        tr_o.wait()
+        tr_o.stop()
+        
+        # Assess results
+        for task_t in tasks_l:
+            task_id        = task_t[0]
+            task_status_o  = task_t[1]
+            self.assertEqual(task_status_o.get_status(), 0)
     
     @classmethod
     def tearDownClass(self):
@@ -136,8 +187,8 @@ class TaskRunnerUnitTest(unittest.TestCase):
 
 """ Unit Test Runner """
 def TaskRunnerUnitTestRunner():
-    tests = ['test_add_one_task',
-             'test_start_one_task']
+    tests = ['test_failed_task',
+             'test_passed_task']
     
     return unittest.TestSuite(map(TaskRunnerUnitTest, tests))
 
