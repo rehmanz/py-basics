@@ -7,7 +7,7 @@ import gevent
 from gevent.event import Event
 
 '''
-Illustrates the use of events
+Events are a form of asynchronous communication between Greenlets.
 '''
 
 evt = Event()
