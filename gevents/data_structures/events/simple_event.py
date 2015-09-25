@@ -1,14 +1,11 @@
-'''
-Created on Sep 10, 2015
-
-@author: zrehman
-'''
-import gevent
-from gevent.event import Event
+__author__ = 'zile'
 
 '''
 Events are a form of asynchronous communication between Greenlets.
 '''
+
+import gevent
+from gevent.event import Event
 
 evt = Event()
 

@@ -26,7 +26,7 @@ class FrequenceCounterUnitTest(unittest.TestCase):
         self.st = FrequenceCounter()
         
         content = ''
-        with open('book.txt') as f:
+        with open('data/book.txt') as f:
             content = f.readlines()
         
         freq = {}
@@ -36,10 +36,12 @@ class FrequenceCounterUnitTest(unittest.TestCase):
                     freq[word] += 1
                 else:
                     freq[word] = 1
-        
-        print freq['the']
-        print freq['her']
-        print freq['him']
+
+        word_l = ['her', 'him']
+        for word in word_l:
+            if word in freq:
+                print("Word: %s, Count=%s" %(word, freq[word]))
+
         
     def test_put(self):
         pass

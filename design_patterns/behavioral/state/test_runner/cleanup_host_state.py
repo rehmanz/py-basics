@@ -15,12 +15,6 @@ class CleanupHostState:
         return self.state
         
     def kick_off_host_state(self):
-        print 'Cannot kick off %s from CleanupHostState' %self.host
-    
-    def configure_host_state(self):
-        print 'Cannot configure %s from CleanupHostState' %self.host
-        
-    def cleanup_host_state(self):
         print '##'
         print '# CleanupHostState: %s' %self.host
         print '##'
@@ -30,6 +24,12 @@ class CleanupHostState:
         self.state.set_runner_state(state=self.state.get_kick_off_host_state())
         print '4: Transitioned to KickOffHostState'
         return 'Cleaned up %s' %self.host
+    
+    def configure_host_state(self):
+        print 'Cannot configure %s from CleanupHostState' %self.host
+        
+    def cleanup_host_state(self):
+        pass
     
 """ Unit Tests """
 class CleanupHostStateUnitTest(unittest.TestCase):

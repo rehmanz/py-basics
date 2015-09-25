@@ -29,7 +29,7 @@ stack.pop()     # [3, 4, 5, 6]
 ##
 # Queues (FIFO)
 ##
-from collections import dequeue
+from collections import deque
 q = deque(['task1', 'task2', 'task3'])
 
 # Enqueue
@@ -38,15 +38,15 @@ q.append('task5')     # ['task1', 'task2', 'task3', 'task4', 'task5']
 
 # Dequeue
 q.popleft()            # task1
-q.popleft()            # task2
+q.pop()                # task5
 
-print q                #  ['task3', 'task4', 'task5']
+print q                #  ['task2', 'task3', 'task4']
 
 ##
 # Functional Programming Tools
 ##
 # Find all even numbers in a list using filter
-def even(x):return x%2
+def even(x):return x%2 == 0
 filter(even, range(1, 10))
 
 # Find the square root of all numbers in the list
