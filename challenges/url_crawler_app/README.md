@@ -17,11 +17,10 @@ Usage
 ------
 .. code :: python
 
-usage: url_crawler.py [-h] filename
+    usage: url_crawler.py [-h] filename
+    
+    positional arguments:
+        filename    file containing timestamp and url data, i.e. "1407564301|www.kings.com"
 
-positional arguments:
-  filename    file containing timestamp and url data, i.e.
-              "1407564301|www.kings.com"
-
-optional arguments:
-  -h, --help  show this help message and exit
+    optional arguments:
+        -h, --help  show this help message and exit
