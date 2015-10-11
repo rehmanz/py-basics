@@ -99,10 +99,8 @@ class UrlCrawler():
         :return: True for success, False otherwise
         """
         try:
-            line_counter = 1
             with open(self.filename) as fh:
                 for line in fh:
-                    line_counter += 1
                     if self.__input_data_ok(line.strip()):
                         timestamp, url = line.strip().split("|")
                         LOGGER.debug("%s %s" %(timestamp, url))
