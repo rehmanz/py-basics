@@ -1,5 +1,6 @@
 __author__ = 'zile'
 
+import re
 import json
 import time
 import unittest
@@ -26,13 +27,6 @@ class UrlCrawler():
         self.record_d = {}
         self.__read_file()
         self.__print_report()
-
-    def __get_formatted_time(self, t):
-        """Returns formatted time string
-        :t: epoch time in seconds
-        :return: date string in "MM/DD/YYYY GMT" format
-        """
-        return time.strftime('%m/%d/%Y GMT', time.localtime(int(t)))
 
     def __print_report(self):
         """Print report
@@ -77,23 +71,33 @@ class UrlCrawler():
         else:
             self.record_d[timestamp][url] += 1
 
-    def __input_data_ok(self, timestamp=None, url=None):
+    def __input_data_ok(self, line=None):
         """Checks if input data is ok
         :return: True for success, False otherwise
         """
-        if (not timestamp) or (not url):
-            return False
-        else:
+        record_pattern = re.compile("\w{10}\|[http]\w+")
+        if (line) and (re.match(record_pattern, line)):
             return True
+        else:
+            return False
+
+    def __get_formatted_time(self, t):
+        """Returns formatted time string
+        :t: epoch time in seconds
+        :return: date string in "MM/DD/YYYY GMT" format
+        """
+        return time.strftime('%m/%d/%Y GMT', time.localtime(int(t)))
 
     def __read_file(self):
         """Read the file and create a record for each line
         """
         try:
+            line_counter = 1
             with open(self.filename) as fh:
                 for line in fh:
-                    timestamp, url = line.strip().split("|")
-                    if self.__input_data_ok(timestamp, url):
+                    line_counter += 1
+                    if self.__input_data_ok(line.strip()):
+                        timestamp, url = line.strip().split("|")
                         LOGGER.debug("%s %s" %(timestamp, url))
                         self.__create_record(self.__get_formatted_time(timestamp), url)
                     else:
@@ -102,21 +106,23 @@ class UrlCrawler():
             LOGGER.debug(json.dumps(self.record_d, indent=4, separators=(',',':')))
 
         except Exception as e:
-            LOGGER.error("URLCrawler File Read Exception: %s" %(e))
+            LOGGER.error("URLCrawler File Read Exception: %s (line $%d)" %(e, line_counter))
 
 
 """ Unit Tests """
 class UrlCrawlerUnitTest(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.INFO)
     
     def test_input_a(self):
-       UrlCrawler(filename="small_set.txt").read()
+       pass
+       #UrlCrawler(filename="small_set.txt").read()
 
     def test_corner_cases(self):
-       self.assertRaises(Exception, UrlCrawler(filename="invalid_file").read())
-       UrlCrawler(filename="invalid_data.txt").read()
+       #self.assertRaises(Exception, UrlCrawler(filename="invalid_file").read())
+       #UrlCrawler(filename="invalid_set.txt").read()
+       UrlCrawler(filename="mixed_set.txt").read()
     
     @classmethod
     def tearDownClass(self):
