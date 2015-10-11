@@ -165,4 +165,4 @@ if __name__ == "__main__":
     try:
         UrlCrawler(filename=filename).read()
     except Exception as e:
-        LOGGER.error("Main Program: %s" %e)
+        LOGGER.error("Main Program Exception: %s" %e)
