@@ -25,14 +25,17 @@ class UrlCrawler():
         """Read the file and generate report
         """
         self.record_d = {}
-        self.__read_file()
-        self.__print_report()
+        if self.__read_file():
+            self.__print_report()
 
     def __print_report(self):
         """Print report
         """
         self.report = ""
-         
+        self.report += "=====================================================================\n"
+        self.report += "Input File: %s\n" %(self.filename)
+        self.report += "---------------------------------------------------------------------\n"
+
         # create a sorted timestamp list
         timestamp_l = []
         for timestamp in self.record_d:
@@ -55,7 +58,7 @@ class UrlCrawler():
             for url_t in url_list_of_tuples:
                 self.report += "%s %d\n" %(url_t[0], url_t[1])
 
-        LOGGER.info("\n%s\n" %self.report)
+        LOGGER.info("\n%s\n\n\n" %self.report)
 
     def __create_record(self, timestamp, url):
         """Inserts timestamp, url and url hit count in a nested dictionary structure
@@ -75,7 +78,7 @@ class UrlCrawler():
         """Checks if input data is ok
         :return: True for success, False otherwise
         """
-        record_pattern = re.compile("\w{10}\|[http]\w+")
+        record_pattern = re.compile("\w{10}\|\w+")
         if (line) and (re.match(record_pattern, line)):
             return True
         else:
@@ -90,6 +93,7 @@ class UrlCrawler():
 
     def __read_file(self):
         """Read the file and create a record for each line
+        :return: True for success, False otherwise
         """
         try:
             line_counter = 1
@@ -104,9 +108,11 @@ class UrlCrawler():
                         LOGGER.warn("URLCrawler Malformed Line (Skipping): \"%s\"" %line)
 
             LOGGER.debug(json.dumps(self.record_d, indent=4, separators=(',',':')))
+            return True
 
         except Exception as e:
-            LOGGER.error("URLCrawler File Read Exception: %s (line $%d)" %(e, line_counter))
+            LOGGER.error("URLCrawler File Read Exception: %s" %(e))
+            return False
 
 
 """ Unit Tests """
@@ -114,15 +120,16 @@ class UrlCrawlerUnitTest(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         logging.basicConfig(level=logging.INFO)
-    
-    def test_input_a(self):
-       pass
-       #UrlCrawler(filename="small_set.txt").read()
 
+    #@unittest.skip("skipping")
+    def test_small_set(self):
+       UrlCrawler(filename="data/small_set.txt").read()
+
+    #@unittest.skip("skipping")
     def test_corner_cases(self):
-       #self.assertRaises(Exception, UrlCrawler(filename="invalid_file").read())
-       #UrlCrawler(filename="invalid_set.txt").read()
-       UrlCrawler(filename="mixed_set.txt").read()
+       self.assertRaises(Exception, UrlCrawler(filename="data/non_existing_file").read())
+       UrlCrawler(filename="data/invalid_set.txt").read()
+       UrlCrawler(filename="data/mixed_set.txt").read()
     
     @classmethod
     def tearDownClass(self):
