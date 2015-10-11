@@ -15,9 +15,8 @@ a report is generated containing
 
 Usage
 ------
-.. code :: python
 
-    usage: url_crawler.py [-h] filename
+    python url_crawler.py filename
     
     positional arguments:
         filename    file containing timestamp and url data, i.e. "1407564301|www.kings.com"
