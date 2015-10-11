@@ -78,8 +78,9 @@ class UrlCrawler():
         """Checks if input data is ok
         :return: True for success, False otherwise
         """
-        record_pattern = re.compile("\w{10}\|\w+")
-        if (line) and (re.match(record_pattern, line)):
+        # valid pattern: 1407478022|www.facebook.com
+        valid_pattern = re.compile("\w{10}\|\w+")
+        if (line) and (re.match(valid_pattern, line)):
             return True
         else:
             return False
