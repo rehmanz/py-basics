@@ -78,6 +78,7 @@ class UrlCrawler():
 
     def __input_data_ok(self, line=None):
         """Checks if input data is ok
+        :line: line containing the time stamp and url
         :return: True for success, False otherwise
         """
         # valid pattern: 1407478022|www.facebook.com
