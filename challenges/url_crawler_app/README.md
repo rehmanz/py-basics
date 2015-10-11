@@ -32,4 +32,4 @@ Complexity Analysis
 Exception Handling
 -------------------
 - File exceptions are handled
-- Input data is validated before a record is created. If the data is malformed, a warning message is displayed
+- Input data is validated before a record is created. If the data is malformed, it is skipped with a warning message
