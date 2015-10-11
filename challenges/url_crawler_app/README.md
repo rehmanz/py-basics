@@ -27,7 +27,7 @@ Usage
 Complexity Analysis
 --------------------
 - Each record is stored in a nested hash with time stamp key as the top level and url under the applicable time stamp key. File is read in linear time (i.e. O(N)) while records are created in contant time.
-- A report is generated in linear time (i.e. O(N)). Both time stamp and url structures are stored in a list. They are, then, sorted using python's built in sort algorith (i.e. O(N log N)).
+- A report is generated in linear time (i.e. O(N)). Both time stamp and url structures are stored in a list (i.e. O(N)). They are, then, sorted using python's built in sort algorith (i.e. O(N log N)).
 
 Exception Handling
 -------------------
