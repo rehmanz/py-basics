@@ -17,12 +17,12 @@ class UrlCrawler():
     def __init__(self, filename):
         """
         :param filename: lines contain a timestamp and a url separated by "|"
-        :return: None
         """
         self.filename = filename
 
     def read(self):
-        """Read the file and generate report
+        """Read the file and generate report to stdout
+        :return: None
         """
         self.record_d = {}
         if self.__read_file():
@@ -30,6 +30,7 @@ class UrlCrawler():
 
     def __print_report(self):
         """Print report
+        :return: None
         """
         self.report = ""
         self.report += "=====================================================================\n"
@@ -64,6 +65,7 @@ class UrlCrawler():
         """Inserts timestamp, url and url hit count in a nested dictionary structure
         :timestamp: timestamp
         :url: URL
+        :return: None
         """
         if not timestamp in self.record_d.keys():
             self.record_d[timestamp] = {}
