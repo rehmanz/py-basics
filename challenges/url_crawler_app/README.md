@@ -23,3 +23,7 @@ Usage
 
     optional arguments:
         -h, --help  show this help message and exit
+
+Complexity Analysis
+--------------------
+- Each record is stored in a nested hash with time stamp key as the top level and url under the applicable time stamp key. File is read in O(N) time while records are created in contant time.
