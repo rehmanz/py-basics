@@ -34,11 +34,6 @@ class UrlCrawler():
         """Print report
         :return: None
         """
-        self.report = ""
-        self.report += "=====================================================================\n"
-        self.report += "Input File: %s\n" %(self.filename)
-        self.report += "---------------------------------------------------------------------\n"
-
         # construct a list of time struct objects and sort it
         time_struct_l = []
         for timestamp in self.record_d:
@@ -51,6 +46,10 @@ class UrlCrawler():
             timestamp_l.append(time.strftime("%m/%d/%Y", time_struct))
 
         # generate report
+        self.report = ""
+        self.report += "=====================================================================\n"
+        self.report += "Input File: %s\n" %(self.filename)
+        self.report += "---------------------------------------------------------------------\n"
         for timestamp in timestamp_l:
             self.report += "%s GMT\n" %(timestamp)
             LOGGER.debug(timestamp)
