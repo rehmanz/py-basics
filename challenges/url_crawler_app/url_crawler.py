@@ -7,6 +7,8 @@ import unittest
 import logging
 import argparse
 
+from datetime import date
+
 LOGGER = logging.getLogger()
 
 class UrlCrawler():
@@ -37,14 +39,20 @@ class UrlCrawler():
         self.report += "Input File: %s\n" %(self.filename)
         self.report += "---------------------------------------------------------------------\n"
 
-        # create a sorted timestamp list
-        timestamp_l = []
+        # construct a list of time struct objects and sort it
+        time_struct_l = []
         for timestamp in self.record_d:
-            timestamp_l.append(timestamp)
-        timestamp_l.sort()
+            time_struct_l.append(time.strptime(timestamp, "%m/%d/%Y"))
+        time_struct_l.sort()
 
+        # convert list of time struct object to a list of simple time stamps
+        timestamp_l = []
+        for time_struct in time_struct_l:
+            timestamp_l.append(time.strftime("%m/%d/%Y", time_struct))
+
+        # generate report
         for timestamp in timestamp_l:
-            self.report += "%s\n" %(timestamp)
+            self.report += "%s GMT\n" %(timestamp)
             LOGGER.debug(timestamp)
 
             # convert url record for this time stamp into list of tuples
@@ -88,12 +96,12 @@ class UrlCrawler():
         else:
             return False
 
-    def __get_formatted_time(self, t):
+    def __get_date_object(self, t):
         """Returns formatted time string
         :t: epoch time in seconds
-        :return: date string in "MM/DD/YYYY GMT" format
+        :return: date object
         """
-        return time.strftime('%m/%d/%Y GMT', time.localtime(int(t)))
+        return time.strftime("%m/%d/%Y", time.gmtime(float(t)))
 
     def __read_file(self):
         """Read the file and create a record for each line
@@ -105,7 +113,7 @@ class UrlCrawler():
                     if self.__input_data_ok(line.strip()):
                         timestamp, url = line.strip().split("|")
                         LOGGER.debug("%s %s" %(timestamp, url))
-                        self.__create_record(self.__get_formatted_time(timestamp), url)
+                        self.__create_record(self.__get_date_object(timestamp), url)
                     else:
                         LOGGER.warn("URLCrawler Malformed Line (Skipping): \"%s\"" %line)
 
@@ -125,13 +133,13 @@ class UrlCrawlerUnitTest(unittest.TestCase):
 
     #@unittest.skip("skipping")
     def test_small_set(self):
-       UrlCrawler(filename="data/small_set.txt").read()
+        UrlCrawler(filename="data/small_set.txt").read()
 
     #@unittest.skip("skipping")
     def test_corner_cases(self):
-       self.assertRaises(Exception, UrlCrawler(filename="data/non_existing_file").read())
-       UrlCrawler(filename="data/invalid_set.txt").read()
-       UrlCrawler(filename="data/mixed_set.txt").read()
+        self.assertRaises(Exception, UrlCrawler(filename="data/non_existing_file").read())
+        UrlCrawler(filename="data/invalid_set.txt").read()
+        UrlCrawler(filename="data/mixed_set.txt").read()
     
     @classmethod
     def tearDownClass(self):
