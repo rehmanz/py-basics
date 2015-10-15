@@ -95,11 +95,12 @@ class UrlCrawler():
         else:
             return False
 
-    def __get_date_object(self, t):
-        """Returns formatted time string
+    def __get_date_string(self, t):
+        """Returns formatted date string
         :t: epoch time in seconds
-        :return: date object
+        :return: date string in MM/DD/YYYY format
         """
+        # TODO: Consider using datetime.utcfromtimestamp(timestamp).date() --> datetime.date(2014, 8, 8)
         return time.strftime("%m/%d/%Y", time.gmtime(float(t)))
 
     def __read_file(self):
@@ -112,7 +113,7 @@ class UrlCrawler():
                     if self.__input_data_ok(line.strip()):
                         timestamp, url = line.strip().split("|")
                         LOGGER.debug("%s %s" %(timestamp, url))
-                        self.__create_record(self.__get_date_object(timestamp), url)
+                        self.__create_record(self.__get_date_string(timestamp), url)
                     else:
                         LOGGER.warn("URLCrawler Malformed Line (Skipping): \"%s\"" %line)
 
