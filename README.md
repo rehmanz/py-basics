@@ -1,4 +1,4 @@
-python-algorithms
-=================
+python-basics
+==============
 
-Python Data Structures and Algorithms.
+Python Basics
